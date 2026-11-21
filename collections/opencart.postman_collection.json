@@ -16,19 +16,54 @@
         {
           "listen": "prerequest",
           "script": {
-            "type": "text/javascript",
+            "id": "9098a979-5a5f-4488-8771-eccccd150fef",
             "exec": [
-              "pm.collectionVariables.set(\"base_url\", \"http://192.168.1.16/opencart-3.0.3.8/upload/index.php?route=\");\r\n"
-            ]
+              "pm.collectionVariables.set(\"base_url\", \"http://192.168.1.16/opencart-3.0.3.8/upload/index.php?route=\");\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
           }
         },
         {
           "listen": "test",
           "script": {
-            "type": "text/javascript",
+            "id": "4d4dca81-6710-4738-8eb2-dd833e609072",
             "exec": [
-              "pm.test(\"Collection variable 'base_url' is created and valid\", function () {\r\n    const baseUrl = pm.collectionVariables.get(\"base_url\");\r\n    \r\n    // Optional: Verify it matches your exact local OpenCart URL\r\n    pm.expect(baseUrl).to.eql(\"http://192.168.1.16/opencart-3.0.3.8/upload/index.php?route=\");\r\n\r\n});\r\n\r\n// Log the value to the Postman Console for quick visual confirmation\r\n\r\npm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"response time is less than 200ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(200);\r\n});\r\nvar jsonData = pm.response.json();\r\npm.collectionVariables.set(\"apitoken\", jsonData.api_token); // store token in collection variable for future use\r\npm.test(\"Response contains success message and a token\", function () {\r\npm.expect(jsonData.success).to.include(\"API session successfully started\");\r\n\r\n});\r\npm.test(\"Collection variable 'apitoken' is created and valid\", function () {\r\n   pm.expect(jsonData.api_token).to.not.be.null;  // when postman sends null\r\npm.expect(jsonData.api_token).to.not.be.undefined; // when postman sends nothing\r\n\r\n\r\n});\r\n"
-            ]
+              "pm.test(\"Collection variable 'base_url' is created and valid\", function () {\r",
+              "    const baseUrl = pm.collectionVariables.get(\"base_url\");\r",
+              "    \r",
+              "    // Optional: Verify it matches your exact local OpenCart URL\r",
+              "    pm.expect(baseUrl).to.eql(\"http://192.168.1.16/opencart-3.0.3.8/upload/index.php?route=\");\r",
+              "\r",
+              "});\r",
+              "\r",
+              "// Log the value to the Postman Console for quick visual confirmation\r",
+              "\r",
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "pm.test(\"response time is less than 40ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(40);\r",
+              "});\r",
+              "var jsonData = pm.response.json();\r",
+              "pm.collectionVariables.set(\"apitoken\", jsonData.api_token); // store token in collection variable for future use\r",
+              "pm.test(\"Response contains success message and a token\", function () {\r",
+              "pm.expect(jsonData.success).to.include(\"API session successfully started\");\r",
+              "\r",
+              "});\r",
+              "pm.test(\"Collection variable 'apitoken' is created and valid\", function () {\r",
+              "   pm.expect(jsonData.api_token).to.not.be.null;  // when postman sends null\r",
+              "pm.expect(jsonData.api_token).to.not.be.undefined; // when postman sends nothing\r",
+              "\r",
+              "\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
           }
         }
       ],
@@ -63,7 +98,7 @@
       },
       "response": [],
       "createdAt": "2026-11-17T17:21:21.000Z",
-      "updatedAt": "2026-11-18T00:11:46.000Z",
+      "updatedAt": "2026-11-21T00:41:04.000Z",
       "uid": "60261046-26ed794d-b838-4501-902a-d34beeec9030"
     },
     {
