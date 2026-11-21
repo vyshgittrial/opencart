@@ -1,0 +1,66 @@
+name: Sync Postman Collections to GitHub
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-collections:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch and unwrap latest collections
+        env:
+          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+          OPENCART_UID: ${{ secrets.OPENCART_UID }}
+          BOOKAPI_UID: ${{ secrets.BOOKAPI_UID }}
+          REQRES_UID: ${{ secrets.REQRES_UID }}
+        run: |
+          mkdir -p collections
+          node -e '
+          const fs = require("fs");
+          const apiKey = process.env.POSTMAN_API_KEY;
+          const targets = [
+            { uid: process.env.OPENCART_UID, out: "collections/opencart.postman_collection.json" },
+            { uid: process.env.BOOKAPI_UID, out: "collections/booksapi.postman_collection.json" },
+            { uid: process.env.REQRES_UID, out: "collections/reqres.postman_collection.json" }
+          ];
+
+          (async () => {
+            for (const t of targets) {
+              if (!t.uid) continue;
+              const res = await fetch(`https://api.getpostman.com/collections/${t.uid}`, {
+                headers: { "X-Api-Key": apiKey }
+              });
+              if (!res.ok) {
+                throw new Error(`Failed to fetch ${t.out}: HTTP ${res.status}`);
+              }
+              const data = await res.json();
+              if (!data.collection) {
+                throw new Error(`Missing .collection wrapper for ${t.out}`);
+              }
+              fs.writeFileSync(t.out, JSON.stringify(data.collection, null, 2) + "\n", "utf8");
+            }
+          })().catch((err) => {
+            console.error(err);
+            process.exit(1);
+          });
+          '
+
+      - name: Commit and push if collections changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add collections/
+          if git diff --staged --quiet; then
+            echo "No collection changes detected."
+          else
+            git commit -m "chore: sync latest Postman collections"
+            git push
+          fi
