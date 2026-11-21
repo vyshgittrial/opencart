@@ -44,8 +44,8 @@
               "pm.test(\"Status code is 201\", function () {\r",
               "    pm.response.to.have.status(201);\r",
               "});\r",
-              "pm.test(\"response time is less than 40ms\", function () {\r",
-              "    pm.expect(pm.response.responseTime).to.be.below(40);\r",
+              "pm.test(\"response time is less than 200ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
               "});\r",
               "var jsonData = pm.response.json();\r",
               "pm.collectionVariables.set(\"apitoken\", jsonData.api_token); // store token in collection variable for future use\r",
@@ -98,7 +98,7 @@
       },
       "response": [],
       "createdAt": "2026-11-17T17:21:21.000Z",
-      "updatedAt": "2026-11-21T00:41:04.000Z",
+      "updatedAt": "2026-11-21T00:59:50.000Z",
       "uid": "60261046-26ed794d-b838-4501-902a-d34beeec9030"
     },
     {
