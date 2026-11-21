@@ -2,7 +2,7 @@ name: Sync Postman Collections to GitHub
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
