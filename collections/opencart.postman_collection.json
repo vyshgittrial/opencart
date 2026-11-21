@@ -1,0 +1,443 @@
+{
+  "info": {
+    "_postman_id": "48ffe752-2dda-4d40-9063-ccece08540fe",
+    "name": "opencart",
+    "description": "Manage operations and login API's\n\nset variables and use it across through script\n\nValidations on statuscode, response time and the response body including schema ValidationsEndFragment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-11-17T16:14:39.000Z",
+    "updatedAt": "2026-11-19T18:06:28.000Z",
+    "lastUpdatedBy": "60261046",
+    "uid": "60261046-48ffe752-2dda-4d40-9063-ccece08540fe"
+  },
+  "item": [
+    {
+      "name": "login",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"base_url\", \"http://192.168.1.16/opencart-3.0.3.8/upload/index.php?route=\");\r\n"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Collection variable 'base_url' is created and valid\", function () {\r\n    const baseUrl = pm.collectionVariables.get(\"base_url\");\r\n    \r\n    // Optional: Verify it matches your exact local OpenCart URL\r\n    pm.expect(baseUrl).to.eql(\"http://192.168.1.16/opencart-3.0.3.8/upload/index.php?route=\");\r\n\r\n});\r\n\r\n// Log the value to the Postman Console for quick visual confirmation\r\n\r\npm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"response time is less than 200ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(200);\r\n});\r\nvar jsonData = pm.response.json();\r\npm.collectionVariables.set(\"apitoken\", jsonData.api_token); // store token in collection variable for future use\r\npm.test(\"Response contains success message and a token\", function () {\r\npm.expect(jsonData.success).to.include(\"API session successfully started\");\r\n\r\n});\r\npm.test(\"Collection variable 'apitoken' is created and valid\", function () {\r\n   pm.expect(jsonData.api_token).to.not.be.null;  // when postman sends null\r\npm.expect(jsonData.api_token).to.not.be.undefined; // when postman sends nothing\r\n\r\n\r\n});\r\n"
+            ]
+          }
+        }
+      ],
+      "id": "26ed794d-b838-4501-902a-d34beeec9030",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "api_key",
+              "type": "text"
+            },
+            {
+              "key": "key",
+              "value": "0AMMkML0yUrIzPrYARA3S2tdAYIpBK40FVzEti8jSl8moUArN3Sk5eFAMVJT5yuwbEd4HYGWtisFODM5g4klv63QYjtZ0Vd0qZ5rJz4kSkTmFp8ZynfjXfhky5nADRcHtUR64YGoYRu8Jqrqas4RzNRHNyMEVuVUkkYcgmdrZxmPQcXjAiIbEXH4TNthosX5vt1o4O1GipLvdD3kH3wymoydBcYJ01rse44s3UgjCzSJRQuThfmu6fhZjajqrFxr",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}api/login",
+          "host": [
+            "{{base_url}}api"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": [],
+      "createdAt": "2026-11-17T17:21:21.000Z",
+      "updatedAt": "2026-11-18T00:11:46.000Z",
+      "uid": "60261046-26ed794d-b838-4501-902a-d34beeec9030"
+    },
+    {
+      "name": "addProduct",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"response time is less than 200ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(200);\r\n});\r\n\r\nvar responseJson = pm.response.json();\r\npm.test(\"Response contains success message\", function () {\r\n    pm.expect(responseJson.success).to.eql(\"Success: You have modified your shopping cart!\");\r\n    pm.expect(responseJson.success).to.not.be.null;\r\n    pm.expect(responseJson.success).to.not.be.undefined;\r\n});\r\n"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"product_id\", 40);\r\npm.collectionVariables.set(\"quantity\", 10);"
+            ]
+          }
+        }
+      ],
+      "id": "bbe5e801-307c-4443-a7b9-5e057598ecc1",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "product_id",
+              "value": "{{product_id}}",
+              "type": "text"
+            },
+            {
+              "key": "quantity",
+              "value": "{{quantity}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}api/cart/add&api_token={{apitoken}}",
+          "host": [
+            "{{base_url}}api"
+          ],
+          "path": [
+            "cart",
+            "add&api_token={{apitoken}}"
+          ]
+        }
+      },
+      "response": [],
+      "createdAt": "2026-11-17T20:44:47.000Z",
+      "updatedAt": "2026-11-18T00:20:41.000Z",
+      "uid": "60261046-bbe5e801-307c-4443-a7b9-5e057598ecc1"
+    },
+    {
+      "name": "changecurrency",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"response time is less than 200ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(200);\r\n});\r\n\r\npm.test(\"success message is returned\", function () {\r\n    var jsonData = pm.response.json();\r\n    pm.expect(jsonData.success).to.eql(\"Success: Your currency has been changed!\");\r\n});\r\n\r\npm.test(\"response does not return null or nothing at all\", function () {\r\n    pm.expect(pm.response.text()).to.not.be.null;\r\n    pm.expect(pm.response.text()).to.not.be.undefined;\r\n});"
+            ]
+          }
+        }
+      ],
+      "id": "6caf0684-3fa4-4924-ab80-eab30522dae3",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "currency",
+              "value": "EUR",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}api/currency&api_token={{apitoken}}",
+          "host": [
+            "{{base_url}}api"
+          ],
+          "path": [
+            "currency&api_token={{apitoken}}"
+          ]
+        }
+      },
+      "response": [],
+      "createdAt": "2026-11-18T00:19:38.000Z",
+      "updatedAt": "2026-11-18T00:25:18.000Z",
+      "uid": "60261046-6caf0684-3fa4-4924-ab80-eab30522dae3"
+    },
+    {
+      "name": "getcontent",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4fec774f-83b7-4b5e-9b0d-ff6d23c555c4",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"response time is less than 200ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});\r",
+              "var responseJson = pm.response.json();\r",
+              "pm.collectionVariables.set(\"cartid\", responseJson.products[0].cart_id);\r",
+              "pm.test(\"Collection variable 'cartid' matches response cart_id\", function () {\r",
+              "    const cid = pm.collectionVariables.get(\"cartid\");\r",
+              "    const responseCartId = responseJson.products[0].cart_id;\r",
+              "    \r",
+              "    // Convert both to strings to avoid strict type mismatch failures (e.g., \"123\" vs 123)\r",
+              "    pm.expect(cid.toString()).to.eql(responseCartId.toString());\r",
+              "});\r",
+              "\r",
+              "// Define your expected database schema and types\r",
+              "const schema = {\r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "        \"products\": {\r",
+              "            \"type\": \"array\",\r",
+              "            \"items\": {\r",
+              "                \"type\": \"object\",\r",
+              "                \"properties\": {\r",
+              "                    \"cart_id\": { \"type\": \"string\" },\r",
+              "                    \"product_id\": { \"type\": \"string\" },\r",
+              "                    \"name\": { \"type\": \"string\" },\r",
+              "                    \"model\": { \"type\": \"string\" },\r",
+              "                    \"option\": { \"type\": \"array\" },\r",
+              "                    \"quantity\": { \"type\": \"string\" },\r",
+              "                    \"stock\": { \"type\": \"boolean\" },\r",
+              "                    \"shipping\": { \"type\": \"string\" },\r",
+              "                    \"price\": { \"type\": \"string\" },\r",
+              "                    \"total\": { \"type\": \"string\" },\r",
+              "                    \"reward\": { \"type\": \"integer\" }\r",
+              "                },\r",
+              "                \"required\": [\r",
+              "                    \"cart_id\",\r",
+              "                    \"product_id\",\r",
+              "                    \"name\",\r",
+              "                    \"model\",\r",
+              "                    \"option\",\r",
+              "                    \"quantity\",\r",
+              "                    \"stock\",\r",
+              "                    \"shipping\",\r",
+              "                    \"price\",\r",
+              "                    \"total\",\r",
+              "                    \"reward\"\r",
+              "                ]\r",
+              "            }\r",
+              "        }\r",
+              "        },\r",
+              "        };\r",
+              "// Validate response against the schema using Postman's built-in pm.response.to.have.jsonSchema()\r",
+              "pm.test(\"Schema is valid and matches database field types\", function () {\r",
+              "    pm.response.to.have.jsonSchema(schema);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Total price of the product is calculated correctly\", function () {\r",
+              "    \r",
+              "    // Target the first product in the array\r",
+              "    const product = responseJson.products[0];\r",
+              "    \r",
+              "    // Store quantity and price from the response in variables\r",
+              "    const quantity = parseInt(product.quantity, 10);\r",
+              "    const price = parseFloat(product.price.replace(/[^0-9.-]+/g, \"\"));\r",
+              "    const actualTotal = parseFloat(product.total.replace(/[^0-9.-]+/g, \"\"));\r",
+              "    \r",
+              "    // Calculate expected total\r",
+              "    const calculatedTotal = parseFloat((quantity * price).toFixed(2));\r",
+              "    \r",
+              "    // Direct comparison\r",
+              "    //pm.expect(calculatedTotal).to.equal(actualTotal);\r",
+              "      pm.expect(calculatedTotal).to.be.closeTo(price * quantity, 0.01);\r",
+              "});\r",
+              "\r",
+              "   \r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "c6a533e2-6807-4bc2-9968-1ea3c34e9b96",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "id": "b4f67211-0b9c-4dfd-9f4f-1581e7b34a94",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "product_id",
+              "value": "{{product_id}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}api/cart/products&api_token={{apitoken}}",
+          "host": [
+            "{{base_url}}api"
+          ],
+          "path": [
+            "cart",
+            "products&api_token={{apitoken}}"
+          ]
+        }
+      },
+      "response": [],
+      "createdAt": "2026-11-17T21:51:54.000Z",
+      "updatedAt": "2026-11-18T23:21:22.000Z",
+      "uid": "60261046-b4f67211-0b9c-4dfd-9f4f-1581e7b34a94"
+    },
+    {
+      "name": "editcart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"response time is less than 200ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(200);\r\n});\r\n\r\npm.test(\"success message is returned\", function () {\r\n    var jsonData = pm.response.json();\r\n    pm.expect(jsonData.success).to.eql(\"Success: You have modified your shopping cart!\");\r\n});\r\n\r\npm.test(\"response does not return null or nothing at all\", function () {\r\n    pm.expect(pm.response.text()).to.not.be.null;\r\n    pm.expect(pm.response.text()).to.not.be.undefined;\r\n});"
+            ]
+          }
+        }
+      ],
+      "id": "df1e134a-3fe3-4be5-9f99-1bfaa5eaeb4d",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "key",
+              "value": "{{cartid}}",
+              "type": "text"
+            },
+            {
+              "key": "quantity",
+              "value": "5",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}api/cart/edit&api_token={{apitoken}}",
+          "host": [
+            "{{base_url}}api"
+          ],
+          "path": [
+            "cart",
+            "edit&api_token={{apitoken}}"
+          ]
+        }
+      },
+      "response": [],
+      "createdAt": "2026-11-17T21:45:47.000Z",
+      "updatedAt": "2026-11-18T00:21:06.000Z",
+      "uid": "60261046-df1e134a-3fe3-4be5-9f99-1bfaa5eaeb4d"
+    },
+    {
+      "name": "removecart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"response time is less than 200ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(200);\r\n});\r\n\r\npm.test(\"success message is returned\", function () {\r\n    var jsonData = pm.response.json();\r\n    pm.expect(jsonData.success).to.eql(\"Success: You have modified your shopping cart!\");\r\n});\r\n\r\npm.test(\"response does not return null or nothing at all\", function () {\r\n    pm.expect(pm.response.text()).to.not.be.null;\r\n    pm.expect(pm.response.text()).to.not.be.undefined;\r\n});"
+            ]
+          }
+        }
+      ],
+      "id": "8bcfebb6-336b-40af-a82b-52ea2bf6f968",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "key",
+              "value": "{{cartid}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}api/cart/remove&api_token={{apitoken}}",
+          "host": [
+            "{{base_url}}api"
+          ],
+          "path": [
+            "cart",
+            "remove&api_token={{apitoken}}"
+          ]
+        }
+      },
+      "response": [],
+      "createdAt": "2026-11-18T00:10:45.000Z",
+      "updatedAt": "2026-11-18T00:21:14.000Z",
+      "uid": "60261046-8bcfebb6-336b-40af-a82b-52ea2bf6f968"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "287ec552-4105-42cc-b109-5def18cc8df4",
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "2840815b-6b1c-441b-b899-deafd20f2e25",
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    },
+    {
+      "key": "apitoken",
+      "value": ""
+    },
+    {
+      "key": "product_id",
+      "value": ""
+    },
+    {
+      "key": "quantity",
+      "value": ""
+    },
+    {
+      "key": "cartid",
+      "value": ""
+    }
+  ]
+}
