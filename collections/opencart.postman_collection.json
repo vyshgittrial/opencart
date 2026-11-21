@@ -5,7 +5,7 @@
     "description": "Manage operations and login API's\n\nset variables and use it across through script\n\nValidations on statuscode, response time and the response body including schema ValidationsEndFragment",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "createdAt": "2026-11-17T16:14:39.000Z",
-    "updatedAt": "2026-11-19T18:06:28.000Z",
+    "updatedAt": "2026-11-21T03:11:27.000Z",
     "lastUpdatedBy": "60261046",
     "uid": "60261046-48ffe752-2dda-4d40-9063-ccece08540fe"
   },
@@ -41,8 +41,8 @@
               "\r",
               "// Log the value to the Postman Console for quick visual confirmation\r",
               "\r",
-              "pm.test(\"Status code is 201\", function () {\r",
-              "    pm.response.to.have.status(201);\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
               "});\r",
               "pm.test(\"response time is less than 200ms\", function () {\r",
               "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
@@ -98,7 +98,7 @@
       },
       "response": [],
       "createdAt": "2026-11-17T17:21:21.000Z",
-      "updatedAt": "2026-11-21T00:59:50.000Z",
+      "updatedAt": "2026-11-21T03:11:29.000Z",
       "uid": "60261046-26ed794d-b838-4501-902a-d34beeec9030"
     },
     {
